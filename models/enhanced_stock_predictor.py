@@ -111,8 +111,8 @@ class EnhancedStockPredictor:
         return df
     
     def get_current_price_robust(self, symbol):
-    """Get current price with enhanced methods"""
-    return self.data_fetcher.get_current_price(symbol)
+        """Get current price with enhanced methods"""
+        return self.data_fetcher.get_current_price(symbol)
     
     def calculate_indicators(self, data):
         """Calculate technical indicators with better NaN handling"""
@@ -208,21 +208,21 @@ class EnhancedStockPredictor:
         return 100 - (100 / (1 + rs))
     
     def prepare_data(self, symbol, period="5y"):
-    """Prepare data for analysis with robust fetching"""
-    print(f"📊 Downloading {period} of data for {symbol}...")
-    
-    # Use our robust fetcher
-    data = self.data_fetcher.fetch_with_retry(symbol, period)
-    
-    if data is None or data.empty:
-        raise ValueError(f"Unable to fetch data for {symbol}. Please try again later.")
-    
-    # Handle multi-level columns if needed
-    if isinstance(data.columns, pd.MultiIndex):
-        data.columns = data.columns.get_level_values(0)
-    
-    # Normalize timezone
-    data = self.normalize_datetime_index(data)
+        """Prepare data for analysis with robust fetching"""
+        print(f"📊 Downloading {period} of data for {symbol}...")
+        
+        # Use our robust fetcher
+        data = self.data_fetcher.fetch_with_retry(symbol, period)
+        
+        if data is None or data.empty:
+            raise ValueError(f"Unable to fetch data for {symbol}. Please try again later.")
+        
+        # Handle multi-level columns if needed
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = data.columns.get_level_values(0)
+        
+        # Normalize timezone
+        data = self.normalize_datetime_index(data)
         
         print(f"✅ Downloaded {len(data)} days of data")
         print(f"📅 Data range: {data.index[0].strftime('%Y-%m-%d')} to {data.index[-1].strftime('%Y-%m-%d')}")
