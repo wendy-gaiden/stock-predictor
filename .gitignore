@@ -1,0 +1,37 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Mac system files
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# Flask
+instance/
+.webassets-cacheold_versions/
+test_setup.py
+old_versions/
+test_setup.py
+old_versions/
+test_setup.py
+*.bak
+*backup*
+* v1.*
+*_v1.*
+templates/.gitignore.txt
