@@ -1,3 +1,4 @@
+from models.data_fetcher import RobustDataFetcher
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -13,6 +14,8 @@ warnings.filterwarnings('ignore')
 
 class EnhancedStockPredictor:
     def __init__(self):
+        self.data_fetcher = RobustDataFetcher()
+
         self.model = GradientBoostingRegressor(
             n_estimators=200,
             max_depth=8,
@@ -108,39 +111,8 @@ class EnhancedStockPredictor:
         return df
     
     def get_current_price_robust(self, symbol):
-        """Get current price with enhanced methods"""
-        try:
-            stock = yf.Ticker(symbol)
-            
-            # First try to get the most recent price from info
-            info = stock.info
-            current_date = datetime.now()
-            
-            # Check for real-time price first
-            for price_key in ['currentPrice', 'regularMarketPrice', 'ask', 'bid', 'previousClose']:
-                if price_key in info and info[price_key] and info[price_key] > 0:
-                    price = info[price_key]
-                    print(f"Got {price_key}: {price}")
-                    return price, current_date
-            
-            # If no real-time price, get historical data
-            for period in ["1d", "5d", "1mo", "3mo"]:
-                try:
-                    data = stock.history(period=period, interval="1d")
-                    if not data.empty:
-                        data = self.normalize_datetime_index(data)
-                        valid_prices = data['Close'].dropna()
-                        if not valid_prices.empty:
-                            # Return the most recent available price
-                            return valid_prices.iloc[-1], valid_prices.index[-1]
-                except:
-                    continue
-                    
-            raise ValueError("No price data available")
-            
-        except Exception as e:
-            print(f"Warning: Could not get current price for {symbol}: {e}")
-            return None, None
+    """Get current price with enhanced methods"""
+    return self.data_fetcher.get_current_price(symbol)
     
     def calculate_indicators(self, data):
         """Calculate technical indicators with better NaN handling"""
@@ -236,30 +208,21 @@ class EnhancedStockPredictor:
         return 100 - (100 / (1 + rs))
     
     def prepare_data(self, symbol, period="5y"):
-        """Prepare data for analysis - FIXED to handle NaN values"""
-        print(f"📊 Downloading {period} of data for {symbol}...")
-        
-        stock = yf.Ticker(symbol)
-        
-        # Get data with standard method
-        data = stock.history(period=period, interval="1d", auto_adjust=True)
-        
-        if data.empty:
-            # Try alternative method
-            print("🔄 Trying alternative download method...")
-            end_date = datetime.now()
-            start_date = end_date - timedelta(days=1825)  # 5 years
-            data = yf.download(symbol, start=start_date, end=end_date, auto_adjust=True, progress=False)
-            
-            # Handle multi-level columns from yf.download
-            if isinstance(data.columns, pd.MultiIndex):
-                data.columns = data.columns.get_level_values(0)
-        
-        if data.empty:
-            raise ValueError(f"No data found for symbol {symbol}")
-        
-        # Normalize timezone
-        data = self.normalize_datetime_index(data)
+    """Prepare data for analysis with robust fetching"""
+    print(f"📊 Downloading {period} of data for {symbol}...")
+    
+    # Use our robust fetcher
+    data = self.data_fetcher.fetch_with_retry(symbol, period)
+    
+    if data is None or data.empty:
+        raise ValueError(f"Unable to fetch data for {symbol}. Please try again later.")
+    
+    # Handle multi-level columns if needed
+    if isinstance(data.columns, pd.MultiIndex):
+        data.columns = data.columns.get_level_values(0)
+    
+    # Normalize timezone
+    data = self.normalize_datetime_index(data)
         
         print(f"✅ Downloaded {len(data)} days of data")
         print(f"📅 Data range: {data.index[0].strftime('%Y-%m-%d')} to {data.index[-1].strftime('%Y-%m-%d')}")
