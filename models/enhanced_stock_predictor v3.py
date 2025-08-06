@@ -593,7 +593,7 @@ class EnhancedStockPredictor:
                 'model_type': f'Enhanced Global Model ({market})',
                 'interactive_chart': clean_chart,
                 
-                'data_freshness': f"Analysis current as of {actual_current_date.strftime('%B %d, %Y')}" + (" (demo data)" if hasattr(self.data_fetcher, 'use_demo_mode') and self.data_fetcher.use_demo_mode else ""),
+                'data_freshness': f"Analysis current as of {actual_current_date.strftime('%B %d, %Y')}",
                 'volatility_score': round(current_volatility * 100, 1)
             }
             

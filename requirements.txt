@@ -10,3 +10,4 @@ wheel==0.41.0
 requests==2.31.0
 lxml==4.9.3
 apscheduler==3.10.4
+requests==2.31.0
