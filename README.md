@@ -2,21 +2,30 @@
 
 An AI-powered stock analysis tool that predicts 3-month price targets using machine learning.
 
-## Features
-- 🔍 Smart stock search with autocomplete
-- 📊 Interactive price charts with historical data
-- 🎯 3-month price predictions (Best/Average/Worst case)
-- 🌍 Support for multiple markets (US, EU, Asia)
-- 📱 Mobile-friendly interface
+🔗 **Live Demo: [https://stock-predictor-gaiden.onrender.com](https://stock-predictor-gaiden.onrender.com)**
 
-## Technology Stack
-- **Backend**: Python, Flask, scikit-learn
-- **Frontend**: HTML, Bootstrap, Plotly.js
-- **Data**: Yahoo Finance API
-- **ML Model**: Gradient Boosting Regressor
+## 🌟 Features
 
-## Live Demo
-Coming soon!
+- **Smart Stock Search**: Autocomplete search for stocks and companies
+- **AI Predictions**: 3-month price forecasts with Best/Average/Worst case scenarios
+- **Interactive Charts**: Visual price history and predictions
+- **Multi-Market Support**: US, European, and Asian markets
+- **Technical Analysis**: Uses 20+ indicators including RSI, MACD, moving averages
+- **Confidence Scores**: Model accuracy ratings for each prediction
 
-## Author
-Wendy Gaiden
+## 🤖 Technology Stack
+
+- **Backend**: Python, Flask
+- **ML Model**: Gradient Boosting Regressor (scikit-learn)
+- **Data Source**: Yahoo Finance (locally), Demo data (cloud)
+- **Frontend**: Bootstrap 5, Plotly.js
+- **Deployment**: Render
+
+## 🚀 Getting Started
+
+### Run Locally
+
+1. Clone the repository:
+```bash
+git clone https://github.com/wendy-gaiden/stock-predictor.git
+cd stock-predictor
